@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- other page elements -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>embedded</title>
+</head>
+
+<body>
+    <div id="link">
+        <a href="#" target="_blank">Start Web  Chat from a Link</a>
+    </div>
+    
+    <div id="button">
+        <button type="button">Start Web Chat from a Button</button>
+    </div>
+
+    
+    <!--
+    Use the below to launch the web chat on the same page as where the link and the button are.  Using either "Embedded Link" or "Embedded Button" of a campaign.
+    <script data-apikey="w0xRg0TQSYGT5X8WFWZMgg" data-env="us01" src="https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js" data-el="#link"></script>
+    <script data-apikey="w0xRg0TQSYGT5X8WFWZMgg" data-env="us01" src="https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js" data-el="#button"></script>
+    -->
+
+    <!--
+    Use the below to launch the web chat on a new browser tab.  Using "Full Page Chat URL" of a campaign.
+    <script>
+        document.getElementById('link').addEventListener('click', function(event) {
+        event.preventDefault();
+        window.open('https://us01ccistatic.zoom.us/us01cci/web-sdk/full-page.html?env=us01&apikey=w0xRg0TQSYGT5X8WFWZMgg&fullScreenId=NgszCQJGTkqUDnkPFUTz0w', '_blank'); // Opens the web chat in a new tab
+    });
+
+    document.getElementById('button').addEventListener('click', function() {
+        window.open('https://us01ccistatic.zoom.us/us01cci/web-sdk/full-page.html?env=us01&apikey=w0xRg0TQSYGT5X8WFWZMgg&fullScreenId=jMmOPFEfT9eG0YfKSQ2dpw', '_blank'); // Opens the web chat in a new tab
+    });
+    </script>
+    -->
+    
+    <!--
+    Use the below to launch the web chat on a new browser tab.  Using "Offsite URL" of a campaign.
+    -->
+    <script>
+        document.getElementById('link').addEventListener('click', function(event) {
+        event.preventDefault();
+        window.open('https://juninishihara.github.io/embedded/web-chat.html?campaign_id=NgszCQJGTkqUDnkPFUTz0w&channel=chat&welcome_screen=on', '_blank'); // Opens the web chat in a new tab
+    });
+
+    document.getElementById('button').addEventListener('click', function() {
+        window.open('https://juninishihara.github.io/embedded/web-chat.html?campaign_id=jMmOPFEfT9eG0YfKSQ2dpw&channel=chat&welcome_screen=on', '_blank'); // Opens the web chat in a new tab
+    });
+    </script>
+    
+</body>
+</html>
