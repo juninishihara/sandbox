@@ -2,42 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
     <title>Zoom Phone Smart Embed</title>
-    <!-- Load the Zoom Phone SDK script -->
-    <script src="https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js"></script>
 </head>
 <body>
-    <!-- Container where the Zoom Phone Smart Embed will render -->
-    <div id="zoom-phone-container"></div>
-
-    <!-- Include the Zoom SDK script -->
-    <script src="https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js"></script>
+    <!-- Display phone numbers as clickable elements -->
+    <ul>
+        <li><a href="#" class="make-call" data-number="090-4705-4641" data-ani="050-5784-3139">Call 090-4705-4641</a></li>
+        <li><a href="#" class="make-call" data-number="090-4705-4641" data-ani="050-1781-70129">Call 090-4705-4641</a></li>
+    </ul>
 
     <script>
-        // Wait until the script is fully loaded
-        window.addEventListener('zp-ready', () => {
-            // Initialize the Zoom Phone Smart Embed
-            const configuration = {
-                enableSavingLog: true,
-                enableAutoLog: true,
-                enableContactSearching: true,
-                enableContactMatching: true,
-                notePageConfiguration: {
-                    // Customize note fields here
-                    // exampleField: 'Example value'
-                }
-            };
+        // Load the Zoom Phone Smart Embed SDK
+        const sdkScript = document.createElement('script');
+        sdkScript.src = "https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js";
+        sdkScript.async = true;
+        document.head.appendChild(sdkScript);
 
-            // Initialize the Zoom Phone Widget
-            window.ZoomPhoneSmartEmbed.init({
-                containerId: 'zoom-phone-container', // The ID of the div container
-                configuration: configuration
+        sdkScript.onload = () => {
+            console.log("Zoom Phone Smart Embed SDK loaded.");
+
+            // Initialize the Zoom Phone Smart Embed
+            const zpWidget = ZoomPhone.createWidget({
+                container: 'zoom-phone-container',
+                configuration: {
+                    enableSavingLog: false,
+                    enableAutoLog: false,
+                    enableContactSearching: false,
+                    enableContactMatching: false,
+                },
             });
 
-            console.log('Zoom Phone Smart Embed Initialized.');
-        });
+            // Add event listeners to all call links
+            document.querySelectorAll('.make-call').forEach((callLink) => {
+                callLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+
+                    // Extract DNIS (phone number) and ANI (Caller ID) from the data attributes
+                    const phoneNumber = callLink.dataset.number;
+                    const ani = callLink.dataset.ani;
+
+                    // Trigger a call with Zoom Phone SDK
+                    zpWidget.makeCall({
+                        number: phoneNumber,
+                        callerId: ani,
+                        autoDial: true
+                    }).catch((error) => {
+                        console.error('Failed to make a call:', error);
+                    });
+                });
+            });
+        };
+
+        sdkScript.onerror = () => {
+            console.error("Failed to load Zoom Phone Smart Embed SDK.");
+        };
     </script>
 </body>
 </html>
