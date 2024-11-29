@@ -7,62 +7,21 @@
     <title>Zoom Phone Smart Embed</title>
 </head>
 <body>
-    <!-- Phone number links -->
-    <ul>
-        <li><a href="#" class="make-call" data-number="09047054641" data-ani="05017817012">Call 09047054641 w/ 05017817012</a></li>
-        <li><a href="#" class="make-call" data-number="09047054641" data-ani="05057843139">Call 09047054641 w/ 05057843139</a></li>
-    </ul>
 
-    <!-- Container for Zoom Phone Embed -->
-    <div id="zoom-phone-container"></div>
+    <number> onClick=call(090470564641)>Call 09047054641</number>
 
     <script>
-        // Load the Zoom Phone SDK
-        const sdkScript = document.createElement('script');
-        sdkScript.src = "https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js";
-        sdkScript.async = true;
-        document.head.appendChild(sdkScript);
-
-        sdkScript.onload = () => {
-            console.log("Zoom Phone Smart Embed SDK loaded.");
-
-            // Initialize the Zoom Phone Widget
-            const zpWidget = ZoomPhone.createWidget({
-                container: 'zoom-phone-container',
-                configuration: {
-                    enableSavingLog: true,
-                    enableAutoLog: true,
-                    enableContactSearching: true,
-                    enableContactMatching: true,
-                },
-            });
-
-            // Attach click handlers to make-call links
-            document.querySelectorAll('.make-call').forEach((callLink) => {
-                callLink.addEventListener('click', (event) => {
-                    event.preventDefault();
-
-                    const phoneNumber = callLink.dataset.number;
-                    const ani = callLink.dataset.ani;
-
-                    console.log("Attempting to call:", phoneNumber, "from ANI:", ani);
-
-                    zpWidget.makeCall({
-                        number: phoneNumber,
-                        callerId: ani,
-                        autoDial: true
-                    }).then(() => {
-                        console.log("Call successfully initiated.");
-                    }).catch((error) => {
-                        console.error("Error initiating call:", error);
-                    });
-                });
-            });
-        };
-
-        sdkScript.onerror = () => {
-            console.error("Failed to load Zoom Phone Smart Embed SDK.");
-        };
+    function call(number)
+    {
+        document.querySelector('iframe#zoom-embeddable-phone-iframe').contentWindow.postMessage({
+        type: 'zp-make-call',
+        data: {
+            number: <phone number>,
+            //callerId: <outgoing caller ID (optional)>,
+            //autoDial: <whether to initiate the call immediately or copy the number (optional and the default is true)> 
+        }
+    }, 'https://applications.zoom.us');
+    };
     </script>
 </body>
 </html>
