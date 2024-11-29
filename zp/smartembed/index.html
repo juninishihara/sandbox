@@ -1,32 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex">
     <title>Zoom Phone Smart Embed</title>
-    <!-- Include the SDK script -->
+    <!-- Load the Zoom Phone SDK script -->
     <script src="https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js"></script>
 </head>
 <body>
+    <div id="zoom-phone-container"></div> <!-- Container for the embedded widget -->
+
     <script>
-        // Add the initialization logic for the injected iframe
-        window.addEventListener('message', (event) => {
-            if (event.origin === 'https://applications.zoom.us' && event.data === 'zp-ready') {
-                // Send the initialization configuration to the injected iframe
-                const iframe = document.querySelector('#zoom-embeddable-phone-iframe');
-                iframe.contentWindow.postMessage({
-                    type: 'zp-init-config',
-                    data: {
-                        enableSavingLog: false,
-                        enableAutoLog: false,
-                        enableContactSearching: false,
-                        enableContactMatching: false,
-                        notePageConfiguration: {
-                            // Optional: Add note page customization
+        // Embed Zoom Phone Smart Embed widget into the container
+        window.addEventListener('load', () => {
+            // Ensure the SDK script has loaded
+            const zoomPhoneSDK = document.createElement('script');
+            zoomPhoneSDK.src = "https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js";
+            document.body.appendChild(zoomPhoneSDK);
+
+            // Listen for the 'zp-ready' event to initialize
+            window.addEventListener('message', (event) => {
+                if (event.origin === 'https://applications.zoom.us' && event.data === 'zp-ready') {
+                    // Send configuration options for the Zoom Phone widget
+                    const iframe = document.querySelector('#zoom-phone-container iframe');
+                    iframe.contentWindow.postMessage({
+                        type: 'zp-init-config',
+                        data: {
+                            enableSavingLog: false,
+                            enableAutoLog: false,
+                            enableContactSearching: false,
+                            enableContactMatching: false,
+                            notePageConfiguration: {
+                                // Optional: Customize the note fields
+                            }
                         }
-                    }
-                }, 'https://applications.zoom.us');
-            }
+                    }, 'https://applications.zoom.us');
+                }
+            });
+
+            // Embed the Zoom Phone widget into the container
+            const container = document.getElementById('zoom-phone-container');
+            const iframe = document.createElement('iframe');
+            iframe.id = "zoom-embeddable-phone-iframe";
+            iframe.src = "https://applications.zoom.us/phone"; // URL of Zoom Phone iframe
+            iframe.style.width = "100%";
+            iframe.style.height = "600px";
+            iframe.style.border = "none";
+            container.appendChild(iframe);
         });
     </script>
 </body>
