@@ -7,14 +7,17 @@
     <title>Zoom Phone Smart Embed</title>
 </head>
 <body>
-    <!-- Display phone numbers as clickable elements -->
+    <!-- Phone number links -->
     <ul>
-        <li><a href="#" class="make-call" data-number="090-4705-4641" data-ani="050-5784-3139">Call 090-4705-4641</a></li>
-        <li><a href="#" class="make-call" data-number="090-4705-4641" data-ani="050-1781-70129">Call 090-4705-4641</a></li>
+        <li><a href="#" class="make-call" data-number="+81-90-2222-3333" data-ani="050-2222-3333">Call +81-90-2222-3333</a></li>
+        <li><a href="#" class="make-call" data-number="+81-80-5555-5555" data-ani="+81-50-8888-8888">Call +81-80-5555-5555</a></li>
     </ul>
 
+    <!-- Container for Zoom Phone Embed -->
+    <div id="zoom-phone-container"></div>
+
     <script>
-        // Load the Zoom Phone Smart Embed SDK
+        // Load the Zoom Phone SDK
         const sdkScript = document.createElement('script');
         sdkScript.src = "https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js";
         sdkScript.async = true;
@@ -23,7 +26,7 @@
         sdkScript.onload = () => {
             console.log("Zoom Phone Smart Embed SDK loaded.");
 
-            // Initialize the Zoom Phone Smart Embed
+            // Initialize the Zoom Phone Widget
             const zpWidget = ZoomPhone.createWidget({
                 container: 'zoom-phone-container',
                 configuration: {
@@ -34,22 +37,24 @@
                 },
             });
 
-            // Add event listeners to all call links
+            // Attach click handlers to make-call links
             document.querySelectorAll('.make-call').forEach((callLink) => {
                 callLink.addEventListener('click', (event) => {
                     event.preventDefault();
 
-                    // Extract DNIS (phone number) and ANI (Caller ID) from the data attributes
                     const phoneNumber = callLink.dataset.number;
                     const ani = callLink.dataset.ani;
 
-                    // Trigger a call with Zoom Phone SDK
+                    console.log("Attempting to call:", phoneNumber, "from ANI:", ani);
+
                     zpWidget.makeCall({
                         number: phoneNumber,
                         callerId: ani,
                         autoDial: true
+                    }).then(() => {
+                        console.log("Call successfully initiated.");
                     }).catch((error) => {
-                        console.error('Failed to make a call:', error);
+                        console.error("Error initiating call:", error);
                     });
                 });
             });
