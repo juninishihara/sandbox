@@ -2,35 +2,27 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="robots" content="noindex">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Zoom Phone Smart Embed</title>
+    <!-- Include the SDK script -->
+    <script src="https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js"></script>
 </head>
 <body>
-    <!-- Load the SDK -->
-    <script src="https://vaapplicationscontent.zoom.us/phoneSdk/static/smart-embed/js/sdk.js"></script>
-
-    <!-- Create an iframe container for Smart Embed -->
-    <iframe
-        id="zoom-embeddable-phone-iframe"
-        src="https://applications.zoom.us/phone"
-        style="width: 100%; height: 600px; border: none;"
-    ></iframe>
-
     <script>
-        // Ensure the iframe is fully loaded before initializing
+        // Add the initialization logic for the injected iframe
         window.addEventListener('message', (event) => {
             if (event.origin === 'https://applications.zoom.us' && event.data === 'zp-ready') {
-                // Post the initialization message to the iframe
-                document.querySelector('iframe#zoom-embeddable-phone-iframe').contentWindow.postMessage({
+                // Send the initialization configuration to the injected iframe
+                const iframe = document.querySelector('#zoom-embeddable-phone-iframe');
+                iframe.contentWindow.postMessage({
                     type: 'zp-init-config',
                     data: {
                         enableSavingLog: false,
                         enableAutoLog: false,
-                        enableContactSearching: true,
-                        enableContactMatching: true,
+                        enableContactSearching: false,
+                        enableContactMatching: false,
                         notePageConfiguration: {
-                            // Optional: Define your note page configuration fields here
+                            // Optional: Add note page customization
                         }
                     }
                 }, 'https://applications.zoom.us');
