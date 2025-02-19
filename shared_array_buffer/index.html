@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enable SharedArrayBuffer</title>
+</head>
+<body>
+    <h1>SharedArrayBuffer Example</h1>
+    <p>If this works, SharedArrayBuffer should be enabled!</p>
+
+    <!-- Load the coi-serviceworker -->
+    <script src="coi-serviceworker.js"></script>
+
+    <script>
+        // Test if SharedArrayBuffer is available
+        if (typeof SharedArrayBuffer !== "undefined") {
+            console.log("SharedArrayBuffer is enabled!");
+        } else {
+            console.error("SharedArrayBuffer is not available.");
+        }
+    </script>
+</body>
+</html>
