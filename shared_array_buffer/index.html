@@ -7,12 +7,7 @@
 </head>
 <body>
     
-<script>
-if (location.hostname.endsWith('.github.io') && !crossOriginIsolated) {
-  navigator.serviceWorker.register('/coi-serviceworker.js')
-    .then(() => location.reload());
-}
-</script>
+    <script src="coi-serviceworker.js"></script>
     
     <h1>SharedArrayBuffer Example 3</h1>
     <p>If this works, SharedArrayBuffer should be enabled!</p>
