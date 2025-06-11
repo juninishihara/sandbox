@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>言語・難易度切り替えサンプル</title>
+  <script 
+    data-apikey="w0xRg0TQSYGT5X8WFWZMgg" 
+    data-env="us01" 
+    src="https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js">
+  </script>
+</head>
+<body>
+  <button id="btn1">言語-日本語・難易度-中</button>
+  <button id="btn2">言語-英語・難易度-高</button>
+  <p id="output"></p>
+
+  <script>
+    // グローバル変数の宣言（文字列用）
+    var var1 = "";
+    var var2 = "";
+
+    // 表示更新関数
+    function updateDisplay() {
+      document.getElementById('output').textContent = 
+        `var1: ${var1}, var2: ${var2}`;
+    }
+
+    // 共通イベントハンドラ
+    function handleButtonClick(values) {
+      var1 = values[0];
+      var2 = values[1];
+      updateDisplay();
+      
+      // ZCC連携処理（例）
+      console.log('ZCCに送信:', { var1, var2 });
+    }
+
+    // イベントリスナー設定
+    document.getElementById('btn1').addEventListener('click', () => {
+      handleButtonClick(["日本語", "中"]);
+    });
+
+    document.getElementById('btn2').addEventListener('click', () => {
+      handleButtonClick(["英語", "高"]);
+    });
+
+    // 初期表示
+    updateDisplay();
+  </script>
+</body>
+</html>
+
