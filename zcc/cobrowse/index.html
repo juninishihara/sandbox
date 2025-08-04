@@ -10,29 +10,23 @@
 
   <form id="customerForm">
     <div>
-      <label>First Name（名）:
-        <input type="text" name="firstName" placeholder="名を入力してください">
-      </label>
+      <label for="firstName">First Name（名）:</label>
+      <input type="text" name="firstName" placeholder="名を入力してください"></input>
     </div>
 
     <div>
-      <label>Last Name（姓）:
-        <input type="text" name="lastName" placeholder="姓を入力してください">
-      </label>
+      <label for="lastName">Last Name（姓）:</label>
+      <input type="text" name="lastName" placeholder="姓を入力してください"></input>
     </div>
 
     <div>
-      <label>Date of Birth（誕生日）:
-        <!-- Masked for agents -->
-        <input type="text" name="dob" placeholder="yyyy/mm/dd" class="juni_cobrowse_mask">
-      </label>
+      <label for="dob">Date of Birth（誕生日）:</label>
+      <input type="text" name="dob" class="juni_cobrowse_mask" placeholder="yyyy/mm/dd"></input>
     </div>
 
     <div>
-      <label>Social Security Number（マイナンバー）:
-        <!-- Masked for agents -->
-        <input type="text" name="ssn" placeholder="XXXX XXXX XXXX" class="juni_cobrowse_mask">
-      </label>
+      <label for="ssn">Social Security Number（ソーシャルセキュリティー番号）:</label>
+      <input type="text" name="ssn" class="juni_cobrowse_mask" placeholder="XXXX XXXX XXXX"></input>
     </div>
   </form>
 
