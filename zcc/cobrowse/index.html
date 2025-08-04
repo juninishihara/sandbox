@@ -7,40 +7,36 @@
 </head>
 <body>
   <h1>Customer Profile</h1>
+
   <form id="customerForm">
     <div>
       <label>First Name:
-        <input type="text" name="firstName" value="Alice">
+        <input type="text" name="firstName" placeholder="First Name">
       </label>
     </div>
 
     <div>
       <label>Last Name:
-        <input type="text" name="lastName" value="Smith">
+        <input type="text" name="lastName" placeholder="Last Name">
       </label>
     </div>
 
     <div>
       <label>Date of Birth:
         <!-- Masked for agents -->
-        <input type="text" name="dob" value="1985-06-15" data-zcc-mask>
+        <input type="text" name="dob" placeholder="Date of Birth" data-zcc-mask>
       </label>
     </div>
 
     <div>
       <label>Social Security Number:
         <!-- Masked for agents -->
-        <input type="text" name="ssn" value="123-45-6789" data-zcc-mask>
+        <input type="text" name="ssn" placeholder="Social Security Number" data-zcc-mask>
       </label>
     </div>
-
-    <button type="submit">Save</button>
   </form>
 
   <!-- Zoom Co-browse SDK -->
-	<!--
-  <script src="https://source.zoom.us/cobrowse/sdk.js"></script>
-	-->
   <script
     data-apikey="w0xRg0TQSYGT5X8WFWZMgg"
     data-env="us01"
