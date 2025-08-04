@@ -1,0 +1,205 @@
+/*  Credit Union form */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #BBF3CE, #4F90EE); 
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+}
+
+/* CSS class to mask PII */
+.mask_pii {
+    color: #0fac24;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* CSS class to mask PII */
+.maskpii {
+    color: #fa0505;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* Form container with a transparent effect and margin at the top */
+.form-container {
+    background-color: rgba(255, 255, 255, 0.9); /* Slight transparency to show the background */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    text-align: left;
+    border: 1px solid #eaeaea;
+    margin-top: 50px; /* Add margin at the top to reveal background */
+}
+
+/* Style the form header to display fields side-by-side */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #274D83;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Style the form rows to display fields side-by-side */
+.form-row {
+    display: flex;
+    gap: 40px; /* Add larger gap to avoid overlap */
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+label {
+    color: #274D83;
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+input, select {
+    padding: 14px;
+    border: 1px solid #4F90EE;
+    border-radius: 12px;
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+}
+
+
+input::placeholder {
+    color: #999999;
+}
+
+input:focus, select:focus {
+    border-color: #274D83;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+/* Ensure alignment and spacing for fields in the same row */
+.form-row .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row .form-group:last-child {
+    flex-grow: 1;
+}
+
+/* Ensure consistent spacing between fields */
+input, select {
+    margin-bottom: 20px;
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: #4F90EE;
+    color: #ffffff;
+    padding: 14px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #274D83;
+    transform: translateY(-3px);
+}
+
+/* CoBrowse Button - Fixed position to follow on scroll */
+.cobrowse-bubble-container {
+    position: fixed; /* Fixed position so the button follows on scroll */
+    top: 20px; /* Distance from top of the viewport */
+    right: 20px; /* Distance from right edge of the viewport */
+    z-index: 1000; /* Ensures the button is on top */
+}
+
+/* Blinking and Color Changing CoBrowse Button */
+.cobrowse-bubble {
+    background-color: #98F2F4; /* Initial background color */
+    color: #000000;
+    padding: 60px; /* Increase padding to make it bigger */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: unset ;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    animation: color-change 5s infinite, blink 5s infinite;
+}
+
+/* Color Change Animation */
+@keyframes color-change {
+    0% {
+        background-color: #98F2F4;
+    }
+    100% {
+        background-color: #FFEC9C;
+    }
+}
+
+/* Blinking animation keyframes */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.cobrowse-bubble:hover {
+    background-color: #FFEC9C;
+    transform: scale(1.1);
+}
+
+.cobrowse-bubble:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Ensure responsive design */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .cobrowse-bubble {
+        width: 80px;
+        height: 80px;
+        font-size: 14px;
+    }
+
+    .form-row {
+        flex-direction: column; /* Stack fields vertically on small screens */
+    }
+}
