@@ -12,11 +12,16 @@ label {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1em;
+  font-weight: bold;
 }
 
 input {
   width: 180px;
   padding: 4px;
+}
+
+input::placeholder {
+  color: #888;
 }
 
 [data-zcc-mask] {
