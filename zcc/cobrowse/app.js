@@ -1,12 +1,18 @@
-// Initialize Zoom Co-browse session (example setup)
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("Initializing Zoom Co-browse Demo...");
+// Listen for the ZoomZccCobrowseSDK:Ready event
+window.addEventListener('ZoomZccCobrowseSDK:Ready', function(event) {
+    const button = document.getElementById('startCobrowseButton'); // Your custom button ID
 
-  // Assuming the SDK provides a global ZCC object
-  if (window.ZCC) {
-    ZCC.init({
-      accountId: "YOUR_ACCOUNT_ID",  // replace with actual account ID
-      appKey: "YOUR_APP_KEY"         // replace with actual app key if required
-    });
-  }
-});
+    if (button) {
+        // Optional: Enable the button if it is disabled
+        button.disabled = false; 
+        
+        // Add a click event to start the Cobrowse session
+        button.addEventListener('click', function() {
+            try {
+                window.ZoomZccCobrowseSDK.init();
+            } catch (e) {
+                console.log("ZoomZccCobrowseSDK is not ready, please try again later")
+            }
+        });
+    }
+}); 
