@@ -24,6 +24,10 @@ input::placeholder {
   color: #888;
 }
 
-[data-zcc-mask] {
-  background-color: #f5f5f5; /* optional: visually indicate masked fields */
+.juni_cobrowse_mask {
+  color: 3fa0505;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
 }
