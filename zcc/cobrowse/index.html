@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZCC Co-browse Data Masking Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Customer Profile</h1>
+
+  <form id="customerForm">
+    <div>
+      <label>First Name:
+        <input type="text" name="firstName" value="Alice">
+      </label>
+    </div>
+
+    <div>
+      <label>Last Name:
+        <input type="text" name="lastName" value="Smith">
+      </label>
+    </div>
+
+    <div>
+      <label>Date of Birth:
+        <!-- Masked for agents -->
+        <input type="text" name="dob" value="1985-06-15" data-zcc-mask>
+      </label>
+    </div>
+
+    <div>
+      <label>Social Security Number:
+        <!-- Masked for agents -->
+        <input type="text" name="ssn" value="123-45-6789" data-zcc-mask>
+      </label>
+    </div>
+
+    <button type="submit">Save</button>
+  </form>
+
+  <!-- Zoom Co-browse SDK -->
+  <script src="https://source.zoom.us/cobrowse/sdk.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
