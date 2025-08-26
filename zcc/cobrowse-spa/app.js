@@ -76,6 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (['home', 'page1', 'page2'].includes(pageName)) {
       loadZoomSDK();
     }
+    
+    // Attach the event listener for the cobrowse button after the content is rendered
+    if (pageName === 'home') {
+      const startButton = document.getElementById('startCobrowseButton');
+      if (startButton) {
+        startButton.addEventListener('click', () => {
+          // You need to replace this with your actual Cobrowse start logic
+          // Example: Calling the Zoom function to start the session
+          // This is a placeholder for your actual implementation
+          alert('Co-browse session is attempting to start. Please enter the 6-digit code.');
+          // Placeholder for the actual SDK call to start a session
+          // For example:
+          // window.zcc.startSession();
+        });
+      }
+    }
   };
 
   const router = () => {
