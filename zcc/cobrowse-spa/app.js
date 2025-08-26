@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contentContainer = document.getElementById('content-container');
 
-  // The content for each page as a string template.
-  // The Zoom SDK script is included only where needed.
   const pages = {
     'home': `
       <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Customer Profile（お客様プロフィール）</h1>
@@ -24,9 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <input type="text" name="ssn" class="juni_cobrowse_mask mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-150 ease-in-out p-3" placeholder="XXXX XXXX XXXX">
         </div>
       </form>
-      <!-- Zoom Co-browse SDK -->
-      <script data-apikey="キー" data-env="us01" src="https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js" data-enable-zcb="true"></script>
-      <script src="app.js"></script>
       <button id="startCobrowseButton" disabled class="mt-6 w-full py-3 px-4 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 disabled:bg-gray-400 transition duration-300 ease-in-out">
         Start Cobrowse
       </button>
@@ -34,14 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'page1': `
       <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">This is Page 1</h1>
       <p class="mb-6 text-center">This is a placeholder page for Page 1.</p>
-      <!-- Zoom Co-browse SDK -->
-      <script data-apikey="キー" data-env="us01" src="https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js" data-enable-zcb="true"></script>
     `,
     'page2': `
       <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">This is Page 2</h1>
       <p class="mb-6 text-center">This is a placeholder page for Page 2.</p>
-      <!-- Zoom Co-browse SDK -->
-      <script data-apikey="キー" data-env="us01" src="https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js" data-enable-zcb="true"></script>
     `,
     'page3': `
       <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">This is Page 3</h1>
@@ -49,45 +40,52 @@ document.addEventListener('DOMContentLoaded', () => {
       <p class="mb-6 text-center font-bold text-red-600">Note: Co-browse is disabled on this page.</p>
     `
   };
+  
+  // A single function to load the SDK and enable the button
+  const loadZoomSDK = () => {
+    // Check if the SDK script already exists to prevent duplicates
+    if (!document.querySelector('script[data-enable-zcb="true"]')) {
+      const script = document.createElement('script');
+      script.src = "[https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js](https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js)";
+      script.setAttribute('data-apikey', 'w0xRg0TQSYGT5X8WFWZMgg');
+      script.setAttribute('data-env', 'us01');
+      script.setAttribute('data-enable-zcb', 'true');
+      document.body.appendChild(script);
 
-  // Function to render the correct page content
-  const renderPage = (pageName) => {
-    // Clear any previous content and scripts
-    contentContainer.innerHTML = '';
-    
-    // Inject the new page content
-    contentContainer.innerHTML = pages[pageName];
-    
-    // Re-execute scripts inside the new content
-    const scripts = contentContainer.querySelectorAll('script');
-    scripts.forEach(script => {
-      const newScript = document.createElement('script');
-      if (script.src) {
-        newScript.src = script.src;
-        newScript.onload = () => {
-            if(script.id === 'startCobrowseButton') {
-                 // re-enable button after script loads
-                 const startButton = document.getElementById('startCobrowseButton');
-                 if (startButton) startButton.disabled = false;
-            }
-        };
-      } else {
-        newScript.textContent = script.textContent;
+      // Listen for the SDK's load event
+      script.onload = () => {
+        // Find and enable the button after the SDK has loaded
+        const startButton = document.getElementById('startCobrowseButton');
+        if (startButton) {
+          startButton.disabled = false;
+        }
+      };
+    } else {
+      // If the script is already loaded, just enable the button
+      const startButton = document.getElementById('startCobrowseButton');
+      if (startButton) {
+        startButton.disabled = false;
       }
-      document.body.appendChild(newScript);
-    });
+    }
   };
 
-  // Simple routing logic based on URL hash
+  const renderPage = (pageName) => {
+    contentContainer.innerHTML = pages[pageName];
+
+    // Conditionally load the SDK based on the pageName
+    if (['home', 'page1', 'page2'].includes(pageName)) {
+      loadZoomSDK();
+    }
+  };
+
   const router = () => {
     let route = window.location.hash.slice(1) || 'home';
     if (!pages[route]) {
-      route = 'home'; // Fallback to home if route doesn't exist
+      route = 'home';
     }
     renderPage(route);
   };
 
-  // Listen for hash changes and initial page load
   window.addEventListener('hashchange', router);
   window.addEventListener('load', router);
 });
