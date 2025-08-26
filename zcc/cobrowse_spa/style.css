@@ -1,0 +1,23 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.nav-button {
+  background-color: #3b82f6;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.nav-button:hover {
+  background-color: #2563eb;
+}
+
+.page-container {
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background-color: #fff;
+    width: 100%;
+    max-width: 48rem; /* Equivalent to w-full max-w-2xl */
+}
