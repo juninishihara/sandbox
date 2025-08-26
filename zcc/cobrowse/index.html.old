@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZCC Co-browse Data Masking Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Customer Profile（お客様プロフィール）</h1>
+
+  <form id="customerForm">
+    <div>
+      <label for="firstName">First Name（名）:</label>
+      <input type="text" name="firstName" placeholder="名を入力してください"></input>
+    </div>
+
+    <div>
+      <label for="lastName">Last Name（姓）:</label>
+      <input type="text" name="lastName" placeholder="姓を入力してください"></input>
+    </div>
+
+    <div>
+      <label for="dob">Date of Birth（誕生日）:</label>
+      <input type="text" name="dob" class="juni_cobrowse_mask" placeholder="yyyy/mm/dd"></input>
+    </div>
+
+    <div>
+      <label for="ssn">Social Security Number（ソーシャルセキュリティー番号）:</label>
+      <input type="text" name="ssn" class="juni_cobrowse_mask" placeholder="XXXX XXXX XXXX"></input>
+    </div>
+  </form>
+
+  <!-- Zoom Co-browse SDK -->
+  <script
+    data-apikey="w0xRg0TQSYGT5X8WFWZMgg"
+    data-env="us01"
+    src="https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js"
+	  
+    /* Cobrowse Tag */
+    data-enable-zcb="true"> /* Add it manually */>
+  </script>
+  <script src="app.js"></script>
+
+<!-- Add this button to your HTML -->
+<button id="startCobrowseButton" disabled>Start Cobrowse</button>
+
+</body>
+</html>
