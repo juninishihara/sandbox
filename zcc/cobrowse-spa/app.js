@@ -1,22 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contentContainer = document.getElementById('content-container');
-  
-  // This event listener will be attached once and will handle button enabling
-  // whenever the SDK becomes ready. This is the key logic from your original code.
+
+  // This event listener is attached once at the beginning to enable the button
+  // as soon as the SDK is ready, regardless of which page is active.
   window.addEventListener('ZoomZccCobrowseSDK:Ready', function(event) {
     const startButton = document.getElementById('startCobrowseButton');
     if (startButton) {
       startButton.disabled = false;
       console.log("Start Cobrowse button is now enabled.");
-      
-      // Attach a single click event listener to the button
-      startButton.addEventListener('click', function() {
-        try {
-          window.ZoomZccCobrowseSDK.init();
-        } catch (e) {
-          console.log("ZoomZccCobrowseSDK is not ready, please try again later", e);
-        }
-      });
     }
   });
 
@@ -84,12 +75,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const route = window.location.hash.slice(1) || 'home';
     const isCobrowsePage = ['home', 'page1', 'page2'].includes(route);
 
-    // Render the page first
     contentContainer.innerHTML = pages[route];
-
-    // Then handle the SDK logic
+    
     if (isCobrowsePage) {
       loadZoomSDK();
+      // Attach the event listener for the button only when on the home page
+      if (route === 'home') {
+        const startButton = document.getElementById('startCobrowseButton');
+        if (startButton) {
+            startButton.addEventListener('click', function() {
+                try {
+                    window.ZoomZccCobrowseSDK.init();
+                } catch (e) {
+                    console.log("ZoomZccCobrowseSDK is not ready, please try again later", e);
+                }
+            });
+        }
+      }
     } else {
       stopZoomSDK();
     }
@@ -98,6 +100,5 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', router);
   window.addEventListener('load', router);
   
-  // Initial page load
   router();
 });
