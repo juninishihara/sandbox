@@ -1,14 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contentContainer = document.getElementById('content-container');
-  let isSDKReady = false;
-
-  // Listen for the SDK's ready event to know when it's fully loaded and ready
+  
+  // This event listener will be attached once and will handle button enabling
+  // whenever the SDK becomes ready. This is the key logic from your original code.
   window.addEventListener('ZoomZccCobrowseSDK:Ready', function(event) {
-    isSDKReady = true;
-    console.log("ZoomZccCobrowseSDK is ready.");
     const startButton = document.getElementById('startCobrowseButton');
     if (startButton) {
       startButton.disabled = false;
+      console.log("Start Cobrowse button is now enabled.");
+      
+      // Attach a single click event listener to the button
+      startButton.addEventListener('click', function() {
+        try {
+          window.ZoomZccCobrowseSDK.init();
+        } catch (e) {
+          console.log("ZoomZccCobrowseSDK is not ready, please try again later", e);
+        }
+      });
     }
   });
 
@@ -53,43 +61,22 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const loadZoomSDK = () => {
-    // Only load the SDK if it's not already loaded
-    if (!document.querySelector('script[data-enable-zcb="true"]')) {
-      const script = document.createElement('script');
-      script.src = "[https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js](https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js)";
-      script.setAttribute('data-apikey', 'w0xRg0TQSYGT5X8WFWZMgg');
-      script.setAttribute('data-env', 'us01');
-      script.setAttribute('data-enable-zcb', 'true');
-      document.body.appendChild(script);
+    const script = document.querySelector('script[data-enable-zcb="true"]');
+    if (!script) {
+      const newScript = document.createElement('script');
+      newScript.src = "[https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js](https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js)";
+      newScript.setAttribute('data-apikey', 'w0xRg0TQSYGT5X8WFWZMgg');
+      newScript.setAttribute('data-env', 'us01');
+      newScript.setAttribute('data-enable-zcb', 'true');
+      document.body.appendChild(newScript);
     }
   };
 
   const stopZoomSDK = () => {
-    // Find and remove the SDK script tag
     const script = document.querySelector('script[data-enable-zcb="true"]');
     if (script) {
       document.body.removeChild(script);
-      isSDKReady = false;
       console.log("ZoomZccCobrowseSDK has been stopped.");
-    }
-  };
-
-  const renderPage = (pageName) => {
-    contentContainer.innerHTML = pages[pageName];
-    
-    // Attach event listeners for the new content
-    if (pageName === 'home') {
-      const startButton = document.getElementById('startCobrowseButton');
-      if (startButton) {
-        startButton.disabled = !isSDKReady;
-        startButton.addEventListener('click', () => {
-          try {
-            window.ZoomZccCobrowseSDK.init();
-          } catch (e) {
-            console.log("ZoomZccCobrowseSDK is not ready, please try again later", e);
-          }
-        });
-      }
     }
   };
 
@@ -97,19 +84,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const route = window.location.hash.slice(1) || 'home';
     const isCobrowsePage = ['home', 'page1', 'page2'].includes(route);
 
+    // Render the page first
+    contentContainer.innerHTML = pages[route];
+
+    // Then handle the SDK logic
     if (isCobrowsePage) {
       loadZoomSDK();
     } else {
       stopZoomSDK();
     }
-    
-    renderPage(route);
   };
 
-  // Listen for hash changes and initial page load
   window.addEventListener('hashchange', router);
   window.addEventListener('load', router);
-
-  // Initial load
+  
+  // Initial page load
   router();
 });
