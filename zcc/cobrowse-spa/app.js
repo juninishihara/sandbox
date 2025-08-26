@@ -86,6 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPage(route);
   };
 
+  // Listen for hash changes and initial page load
   window.addEventListener('hashchange', router);
   window.addEventListener('load', router);
+
+  // Load the SDK immediately when the DOM is ready.
+  loadZoomSDK();
 });
