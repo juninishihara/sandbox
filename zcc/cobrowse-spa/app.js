@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contentContainer = document.getElementById('content-container');
+  let isSDKReady = false;
+
+  // Listen for the SDK's ready event to know when it's fully loaded and ready
+  window.addEventListener('ZoomZccCobrowseSDK:Ready', function(event) {
+    isSDKReady = true;
+    console.log("ZoomZccCobrowseSDK is ready.");
+    const startButton = document.getElementById('startCobrowseButton');
+    if (startButton) {
+      startButton.disabled = false;
+    }
+  });
 
   const pages = {
     'home': `
@@ -40,10 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
       <p class="mb-6 text-center font-bold text-red-600">Note: Co-browse is disabled on this page.</p>
     `
   };
-  
-  // A single function to load the SDK and enable the button
+
   const loadZoomSDK = () => {
-    // Check if the SDK script already exists to prevent duplicates
+    // Only load the SDK if it's not already loaded
     if (!document.querySelector('script[data-enable-zcb="true"]')) {
       const script = document.createElement('script');
       script.src = "[https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js](https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js)";
@@ -51,54 +61,48 @@ document.addEventListener('DOMContentLoaded', () => {
       script.setAttribute('data-env', 'us01');
       script.setAttribute('data-enable-zcb', 'true');
       document.body.appendChild(script);
+    }
+  };
 
-      // Listen for the SDK's load event
-      script.onload = () => {
-        // Find and enable the button after the SDK has loaded
-        const startButton = document.getElementById('startCobrowseButton');
-        if (startButton) {
-          startButton.disabled = false;
-        }
-      };
-    } else {
-      // If the script is already loaded, just enable the button
-      const startButton = document.getElementById('startCobrowseButton');
-      if (startButton) {
-        startButton.disabled = false;
-      }
+  const stopZoomSDK = () => {
+    // Find and remove the SDK script tag
+    const script = document.querySelector('script[data-enable-zcb="true"]');
+    if (script) {
+      document.body.removeChild(script);
+      isSDKReady = false;
+      console.log("ZoomZccCobrowseSDK has been stopped.");
     }
   };
 
   const renderPage = (pageName) => {
     contentContainer.innerHTML = pages[pageName];
-
-    // Conditionally load the SDK based on the pageName
-    if (['home', 'page1', 'page2'].includes(pageName)) {
-      loadZoomSDK();
-    }
     
-    // Attach the event listener for the cobrowse button after the content is rendered
+    // Attach event listeners for the new content
     if (pageName === 'home') {
       const startButton = document.getElementById('startCobrowseButton');
       if (startButton) {
+        startButton.disabled = !isSDKReady;
         startButton.addEventListener('click', () => {
-          // You need to replace this with your actual Cobrowse start logic
-          // Example: Calling the Zoom function to start the session
-          // This is a placeholder for your actual implementation
-          alert('Co-browse session is attempting to start. Please enter the 6-digit code.');
-          // Placeholder for the actual SDK call to start a session
-          // For example:
-          // window.zcc.startSession();
+          try {
+            window.ZoomZccCobrowseSDK.init();
+          } catch (e) {
+            console.log("ZoomZccCobrowseSDK is not ready, please try again later", e);
+          }
         });
       }
     }
   };
 
   const router = () => {
-    let route = window.location.hash.slice(1) || 'home';
-    if (!pages[route]) {
-      route = 'home';
+    const route = window.location.hash.slice(1) || 'home';
+    const isCobrowsePage = ['home', 'page1', 'page2'].includes(route);
+
+    if (isCobrowsePage) {
+      loadZoomSDK();
+    } else {
+      stopZoomSDK();
     }
+    
     renderPage(route);
   };
 
@@ -106,6 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', router);
   window.addEventListener('load', router);
 
-  // Load the SDK immediately when the DOM is ready.
-  loadZoomSDK();
+  // Initial load
+  router();
 });
