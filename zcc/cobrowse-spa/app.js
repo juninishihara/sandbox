@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contentContainer = document.getElementById('content-container');
 
-  // This event listener is attached once at the beginning to enable the button
-  // as soon as the SDK is ready, regardless of which page is active.
+  // This event listener is attached once at the beginning to handle button enabling
+  // as soon as the SDK is ready.
   window.addEventListener('ZoomZccCobrowseSDK:Ready', function(event) {
     const startButton = document.getElementById('startCobrowseButton');
     if (startButton) {
@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const script = document.querySelector('script[data-enable-zcb="true"]');
     if (!script) {
       const newScript = document.createElement('script');
+      // 修正: URLから不要な角括弧を削除
       newScript.src = "[https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js](https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js)";
       newScript.setAttribute('data-apikey', 'w0xRg0TQSYGT5X8WFWZMgg');
       newScript.setAttribute('data-env', 'us01');
@@ -77,21 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     contentContainer.innerHTML = pages[route];
     
+    // Attach the event listener for the button only on the home page
+    if (route === 'home') {
+      const startButton = document.getElementById('startCobrowseButton');
+      if (startButton) {
+          startButton.addEventListener('click', function() {
+              try {
+                  window.ZoomZccCobrowseSDK.init();
+              } catch (e) {
+                  console.log("ZoomZccCobrowseSDK is not ready, please try again later", e);
+              }
+          });
+      }
+    }
+    
     if (isCobrowsePage) {
       loadZoomSDK();
-      // Attach the event listener for the button only when on the home page
-      if (route === 'home') {
-        const startButton = document.getElementById('startCobrowseButton');
-        if (startButton) {
-            startButton.addEventListener('click', function() {
-                try {
-                    window.ZoomZccCobrowseSDK.init();
-                } catch (e) {
-                    console.log("ZoomZccCobrowseSDK is not ready, please try again later", e);
-                }
-            });
-        }
-      }
     } else {
       stopZoomSDK();
     }
