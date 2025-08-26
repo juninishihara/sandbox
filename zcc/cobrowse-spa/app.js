@@ -51,10 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!script) {
       const newScript = document.createElement('script');
       newScript.src = "[https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js](https://us01ccistatic.zoom.us/us01cci/web-sdk/zcc-sdk.js)";
-      newScript.setAttribute('data-apikey', 'w0xRg0TQSYGT5X8WFWZMgg');
+      newScript.setAttribute('data-apikey', 'キー');
       newScript.setAttribute('data-env', 'us01');
       newScript.setAttribute('data-enable-zcb', 'true');
-      document.head.appendChild(newScript);
+      document.body.appendChild(newScript); // Append to body
 
       // Event listener to enable the button once the SDK is loaded
       newScript.onload = () => {
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const stopZoomSDK = () => {
     const script = document.querySelector('script[data-enable-zcb="true"]');
     if (script) {
-      document.head.removeChild(script);
+      document.body.removeChild(script); // Remove from body
       isSDKReady = false;
       console.log("ZoomZccCobrowseSDK has been stopped.");
     }
@@ -83,10 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const route = window.location.hash.slice(1) || 'home';
     const isCobrowsePage = ['home', 'page1', 'page2'].includes(route);
 
-    // Remove old content and add new content
+    // Clear and add new content
     contentContainer.innerHTML = pages[route];
     
-    // Attach the event listener for the button only when on the home page
+    // Manage SDK loading/stopping based on the current page
+    if (isCobrowsePage) {
+      loadZoomSDK();
+    } else {
+      stopZoomSDK();
+    }
+    
+    // Attach the event listener for the button only on the home page
     if (route === 'home') {
       const startButton = document.getElementById('startCobrowseButton');
       if (startButton) {
@@ -101,13 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       }
-    }
-    
-    // Manage SDK loading/stopping based on the current page
-    if (isCobrowsePage) {
-      loadZoomSDK();
-    } else {
-      stopZoomSDK();
     }
   };
 
